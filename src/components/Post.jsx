@@ -9,6 +9,11 @@ const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
   // This is essentially a Promise, but we don't need to wait for it to resolve
   // Subscribing to the firebase store takes care of that.
   const remove = () => postRef.delete();
+  const update = () => postRef.update({
+    stars: stars + 1
+  })
+
+  console.log(createdAt)
 
   return (
     <article className="Post">
@@ -31,10 +36,10 @@ const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
             {comments}
           </p>
           <p>Posted by {user.displayName}</p>
-          <p>{moment(createdAt).calendar()}</p>
+          <p>{moment(createdAt.toDate()).calendar()}</p>
         </div>
         <div>
-          <button className="star">Star</button>
+          <button className="star" onClick={update}>Star</button>
           <button className="delete" onClick={remove}>Delete</button>
         </div>
       </div>

@@ -3,9 +3,9 @@ import React from 'react'
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 
-const SignInAndSignUp = () => (
+const SignInAndSignUp = ({signInWithGoogle}) => (
   <div>
-    <SignIn />
+    <SignIn signInWithGoogle={signInWithGoogle}/>
     <SignUp />
   </div>
 );

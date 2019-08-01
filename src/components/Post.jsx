@@ -12,9 +12,7 @@ const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
   const update = () => postRef.update({
     stars: stars + 1
   })
-
-  console.log(createdAt)
-
+  
   return (
     <article className="Post">
       <div className="Post--content">

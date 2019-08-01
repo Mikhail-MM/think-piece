@@ -1,6 +1,7 @@
 
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/auth';
 
 var config = {
   apiKey: "AIzaSyBSrxwqn9FQ91WRjPqqQVpQghZpE5zD00w",
@@ -20,6 +21,10 @@ if (process.env.NODE_ENV === 'development') {
 firebase.initializeApp(config);
 
 export const firestore = firebase.firestore();
+export const auth = firebase.auth();
+
+export const provider = new firebase.auth.GoogleAuthProvider();
+export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
 /*This configuration "settings" object is used because FireBase added a breaking change
 * to how dates were stored internally.

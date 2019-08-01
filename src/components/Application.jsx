@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 
-import { firestore } from '../firebase';
+import { firestore, signInWithGoogle } from '../firebase';
 
 import { collectIdsAndDocs } from '../utils';
+
 import Posts from './Posts';
+import Authentication from './Authentication';
 
 class Application extends Component {
   state = {
@@ -27,6 +29,7 @@ class Application extends Component {
     return (
       <main className="Application">
         <h1>Think Piece</h1>
+        <Authentication signInWithGoogle={signInWithGoogle} />
         <Posts posts={posts} />
       </main>
     );

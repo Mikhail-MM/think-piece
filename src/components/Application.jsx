@@ -19,17 +19,21 @@ class Application extends Component {
   }
 
   handleCreate = async post => {
-    console.log(post);
     const docRef = await firestore.collection('posts').add(post)
-    console.log(docRef);
     const doc = await docRef.get();
-    console.log(doc);
     const newPost = collectIdsAndDocs(doc);
-    console.log(newPost)
     this.setState(prevState => ({
       posts: [newPost, ...prevState.posts]
     }));
   };
+
+  handleRemove = async event => {
+    const { currentTarget: { dataset: { id }}} = event;
+    const { posts } = this.state;
+    const deleted = await firestore.doc(`posts/${id}`).delete();
+    const filteredState = posts.filter(post => post.id !== id);
+    this.setState({ posts: filteredState});
+  }
 
   render() {
     const { posts } = this.state;
@@ -37,7 +41,10 @@ class Application extends Component {
     return (
       <main className="Application">
         <h1>Think Piece</h1>
-        <Posts posts={posts} onCreate={this.handleCreate} />
+        <Posts 
+          posts={posts} 
+          onCreate={this.handleCreate} 
+          onRemove={this.handleRemove}/>
       </main>
     );
   }

@@ -12,12 +12,6 @@ var config = {
   appId: "1:889931848424:web:73fb709cf4551af4"
 };
 
-/*This configuration "settings" object is used because FireBase added a breaking change
-* to how dates were stored internally.
-*/
-
-
-
 if (process.env.NODE_ENV === 'development') {
   // Add firebase object to global window for experimentation
   window.firebase = firebase;
@@ -26,6 +20,9 @@ if (process.env.NODE_ENV === 'development') {
 firebase.initializeApp(config);
 
 export const firestore = firebase.firestore();
+/*This configuration "settings" object is used because FireBase added a breaking change
+* to how dates were stored internally.
+*/
 
 const settings = {
   timestampsInSnapshots: true

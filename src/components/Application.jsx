@@ -10,29 +10,15 @@ class Application extends Component {
     posts: [],
   };
 
+  unsubscribe = null;
+
   componentDidMount = async () => {
-    const snapshot = await firestore.collection('posts').get()
-    // snapshot.docs is a getter 
-    const posts = snapshot.docs.map(collectIdsAndDocs);
-    this.setState({posts})
-    console.log(this.state.posts)
-  }
-
-  handleCreate = async post => {
-    const docRef = await firestore.collection('posts').add(post)
-    const doc = await docRef.get();
-    const newPost = collectIdsAndDocs(doc);
-    this.setState(prevState => ({
-      posts: [newPost, ...prevState.posts]
-    }));
-  };
-
-  handleRemove = async event => {
-    const { currentTarget: { dataset: { id }}} = event;
-    const { posts } = this.state;
-    const deleted = await firestore.doc(`posts/${id}`).delete();
-    const filteredState = posts.filter(post => post.id !== id);
-    this.setState({ posts: filteredState});
+    // onSnapshot takes a callback that we want called every time a new snapshot is registered
+    // returns a function we can use to unsubscribe
+    this.unsubscribe = firestore.collection('posts').onSnapshot(snapshot => {
+      const posts = snapshot.docs.map(collectIdsAndDocs);
+      this.setState({posts})
+    })
   }
 
   render() {
@@ -41,10 +27,7 @@ class Application extends Component {
     return (
       <main className="Application">
         <h1>Think Piece</h1>
-        <Posts 
-          posts={posts} 
-          onCreate={this.handleCreate} 
-          onRemove={this.handleRemove}/>
+        <Posts posts={posts} />
       </main>
     );
   }

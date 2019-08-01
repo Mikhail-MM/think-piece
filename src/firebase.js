@@ -20,6 +20,7 @@ if (process.env.NODE_ENV === 'development') {
 firebase.initializeApp(config);
 
 export const firestore = firebase.firestore();
+
 /*This configuration "settings" object is used because FireBase added a breaking change
 * to how dates were stored internally.
 */

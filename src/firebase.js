@@ -23,7 +23,7 @@ firebase.initializeApp(config);
 export const firestore = firebase.firestore();
 export const auth = firebase.auth();
 
-export const provider = new firebase.auth.GoogleAuthProvider();
+const provider = new firebase.auth.GoogleAuthProvider();
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
 /*This configuration "settings" object is used because FireBase added a breaking change

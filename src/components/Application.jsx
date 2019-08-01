@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { firestore, signInWithGoogle } from '../firebase';
+import { firestore, signInWithGoogle, auth } from '../firebase';
 
 import { collectIdsAndDocs } from '../utils';
 
@@ -12,7 +12,8 @@ class Application extends Component {
     posts: [],
   };
 
-  unsubscribe = null;
+  unsubscribeFirestore = null;
+  unsubscribeAuth = null;
 
   componentDidMount = async () => {
     // onSnapshot takes a callback that we want called every time a new snapshot is registered
@@ -21,7 +22,16 @@ class Application extends Component {
       const posts = snapshot.docs.map(collectIdsAndDocs);
       this.setState({posts})
     })
+    this.unsubscribeAuth = auth.onAuthStateChanged(user => {
+      if (user) {
+        // User has logged in.
+        console.log(user);
+      } else {
+        // User === null; user is logged out.
+      }
+    })
   }
+  
 
   render() {
     const { posts } = this.state;

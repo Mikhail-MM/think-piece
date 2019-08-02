@@ -3,10 +3,18 @@ import React from 'react';
 import CurrentUser from './CurrentUser';
 import SignInAndSignUp from './SignInAndSignUp';
 
-const Authentication = ({ user, loading, signInWithGoogle }) => {
+import { AuthContext } from '../providers/AuthProvider';
+
+const Authentication = ({ loading, signInWithGoogle }) => {
   if (loading) return null;
 
-  return <div>{user ? <CurrentUser {...user} /> : <SignInAndSignUp signInWithGoogle={signInWithGoogle}/>}</div>;
+  return <div>
+    <AuthContext.Consumer>
+      { user => {
+        return user ? <CurrentUser {...user} /> : <SignInAndSignUp signInWithGoogle={signInWithGoogle}/>
+      }}
+    </AuthContext.Consumer>
+  </div>
 };
 
 export default Authentication;

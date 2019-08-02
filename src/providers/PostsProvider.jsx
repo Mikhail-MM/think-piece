@@ -24,7 +24,7 @@ class PostsProvider extends Component {
 
     render() {
         const { posts } = this.state;
-        const { children}  = this.props;
+        const { children }  = this.props;
 
         return(
             <PostsContext.Provider value={posts}>

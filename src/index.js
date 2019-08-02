@@ -4,10 +4,13 @@ import { render } from 'react-dom';
 import './index.scss';
 
 import Application from './components/Application';
-import PostsProvider from './providers/PostsProvider'
+import PostsProvider from './providers/PostsProvider';
+import AuthProvider from './providers/AuthProvider';
 render(
     <PostsProvider>
-        <Application />
+        <AuthProvider>
+            <Application />
+        </AuthProvider>
     </PostsProvider>, 
     document.getElementById('root')
 );

@@ -14,6 +14,7 @@ class SignIn extends Component {
 
     this.setState({ email: '', password: '' });
   };
+  
 
   render() {
     const { email, password } = this.state;

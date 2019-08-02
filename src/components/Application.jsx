@@ -26,8 +26,10 @@ class Application extends Component {
       if (user) {
         // User has logged in.
         console.log(user);
+        this.setState({user})
       } else {
         // User === null; user is logged out.
+        this.setState({user: null});
       }
     })
   }
@@ -39,7 +41,7 @@ class Application extends Component {
     return (
       <main className="Application">
         <h1>Think Piece</h1>
-        <Authentication signInWithGoogle={signInWithGoogle} />
+        <Authentication signInWithGoogle={signInWithGoogle} user={this.state.user}/>
         <Posts posts={posts} />
       </main>
     );

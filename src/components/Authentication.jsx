@@ -6,7 +6,7 @@ import SignInAndSignUp from './SignInAndSignUp';
 const Authentication = ({ user, loading, signInWithGoogle }) => {
   if (loading) return null;
 
-  return <div>{user ? <CurrentUser /> : <SignInAndSignUp signInWithGoogle={signInWithGoogle}/>}</div>;
+  return <div>{user ? <CurrentUser {...user} /> : <SignInAndSignUp signInWithGoogle={signInWithGoogle}/>}</div>;
 };
 
 export default Authentication;

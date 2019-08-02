@@ -13,7 +13,7 @@ class AddPost extends Component {
 
     const { title, content } = this.state;
     const { uid, displayName, email, photoURL } = this.props.user || {} // Will blow up if destructuring from null
-    console.log(this.props.user)
+
     const post = {
       title,
       content,
@@ -35,9 +35,7 @@ class AddPost extends Component {
       }
       await firestore.collection('posts').add(post)
     } catch(err) {
-      console.log(`There was an error: ${err}`)
-      console.log(err)
-      console.error(err)
+      console.error(err);
     }
   
     this.setState({ title: '', content: '' });

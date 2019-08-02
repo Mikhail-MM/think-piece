@@ -27,13 +27,11 @@ class PostsProvider extends Component {
         const { children}  = this.props;
 
         return(
-
             <PostsContext.Provider value={posts}>
                 {children}
             </PostsContext.Provider>
         )
     };
-
 };
 
 export default PostsProvider;

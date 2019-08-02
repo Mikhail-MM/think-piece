@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { firestore, signInWithGoogle, auth } from '../firebase';
+import { firestore, signInWithGoogle, auth, createUserProfileDocument} from '../firebase';
 
 import { collectIdsAndDocs } from '../utils';
 
@@ -22,16 +22,16 @@ class Application extends Component {
       const posts = snapshot.docs.map(collectIdsAndDocs);
       this.setState({posts})
     })
-    this.unsubscribeAuth = auth.onAuthStateChanged(user => {
+    this.unsubscribeAuth = auth.onAuthStateChanged(async user => {
       if (user) {
-        // User has logged in.
-        console.log("Auth state changed - User logged in.")
         console.log(user);
-        this.setState({user})
-      } else {
-        // User === null; user is logged out.
-        console.log("Auth state changed - User logged out.")
-        this.setState({user: null});
+        const { metadata: { creationTime}, ...userData } = user;
+        console.log(Date(creationTime))
+        const loggedUser = await createUserProfileDocument(user);
+        this.setState({user: {
+          createdAt: creationTime,
+          ...userData
+        }})
       }
     })
   }

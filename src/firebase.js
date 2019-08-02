@@ -26,6 +26,43 @@ export const auth = firebase.auth();
 const provider = new firebase.auth.GoogleAuthProvider();
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
+export const createUserProfileDocument = async (user, additionalData)  => {
+  if (!user) return;
+
+  // Get a reference to the place in the database where a user profile might be.
+  const userRef = firestore.doc(`users/${user.uid}`);
+
+  // Go and fetch the document from that location.
+  const snapshot = userRef.get();
+
+  // Create a new user document in the FireStore DB if the user with this UID does not exist
+  if (!snapshot.exists) {
+    const { displayName, email, photoURL} = user;
+    const createdAt = new Date();
+    try {
+      await userRef.set({
+        displayName,
+        email, photoURL,
+        createdAt,
+        ...additionalData
+      })
+    } catch(err) {
+      console.error('Error creating user', err);
+    }
+  }
+  // Always return an object containing { The user's ID, as well as the other data - This is for SetState}
+  return getUserDocument(user.uid);
+}
+
+export const getUserDocument = async (uid) => {
+  if (!uid) return null;
+  try {
+    const user = await firestore.collection('users').doc(uid).get();
+    return { uid, ...user.data() }
+  } catch(err) {
+    console.error('Error fetching user', err.message);
+  }
+}
 /*This configuration "settings" object is used because FireBase added a breaking change
 * to how dates were stored internally.
 */

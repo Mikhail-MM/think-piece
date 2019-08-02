@@ -17,8 +17,8 @@ class AuthProvider extends Component {
               const { metadata: { creationTime}, ...userData } = user;
               const loggedUser = await createUserProfileDocument(user);
               this.setState({user: {
-                createdAt: creationTime,
-                ...userData
+                createdAt: user.metadata.creationTime,
+                ...loggedUser
               }})
             } else {
               this.setState({user})

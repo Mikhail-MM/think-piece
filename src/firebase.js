@@ -28,13 +28,10 @@ export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
 export const createUserProfileDocument = async (user, additionalData)  => {
   if (!user) return;
-
   // Get a reference to the place in the database where a user profile might be.
   const userRef = firestore.doc(`users/${user.uid}`);
-
   // Go and fetch the document from that location.
-  const snapshot = userRef.get();
-
+  const snapshot = await userRef.get();
   // Create a new user document in the FireStore DB if the user with this UID does not exist
   if (!snapshot.exists) {
     const { displayName, email, photoURL} = user;

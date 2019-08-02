@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import moment from 'moment';
 import { firestore } from '../firebase';
 
+import { AuthContext } from '../providers/AuthProvider'
+
+const belongsToCurrentUser = (currentUser, postAuthor) => {
+  if (!currentUser) return false;
+  return currentUser.uid === postAuthor.uid;
+}
+
 const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
+
+  const currentUser = useContext(AuthContext);
   
   const postRef = firestore.doc(`posts/${id}`)
+  
   // This is essentially a Promise, but we don't need to wait for it to resolve
   // Subscribing to the firebase store takes care of that.
   const remove = () => postRef.delete();
@@ -38,7 +48,9 @@ const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
         </div>
         <div>
           <button className="star" onClick={update}>Star</button>
-          <button className="delete" onClick={remove}>Delete</button>
+          { belongsToCurrentUser(currentUser, user) &&
+            <button className="delete" onClick={remove}>Delete</button>
+          }
         </div>
       </div>
     </article>

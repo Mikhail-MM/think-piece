@@ -8,26 +8,37 @@ class AddPost extends Component {
     this.setState({ [name]: value });
   };
 
-  handleSubmit = event => {
+  handleSubmit = async event => {
     event.preventDefault();
 
     const { title, content } = this.state;
-
+    const { uid, displayName, email, photoURL } = this.props.user || {} // Will blow up if destructuring from null
+    console.log(this.props.user)
     const post = {
       title,
       content,
       user: {
-        uid: '1111',
-        displayName: 'Steve Kinney',
-        email: 'steve@mailinator.com',
-        photoURL: 'http://placekitten.com/g/200/200',
+        uid,
+        displayName,
+        email,
+        photoURL
       },
       favorites: 0,
       comments: 0,
       createdAt: new Date(),
     }
 
-    firestore.collection('posts').add(post)
+    try {
+      if (!this.props.user) {
+        console.log("You must be logged in to post.")
+        return;
+      }
+      await firestore.collection('posts').add(post)
+    } catch(err) {
+      console.log(`There was an error: ${err}`)
+      console.log(err)
+      console.error(err)
+    }
   
     this.setState({ title: '', content: '' });
   };

@@ -29,11 +29,28 @@ exports.sanitizeContent = functions
         const { content, sanitized } = change.after.data();
         if (content && !sanitized) {
             // The function actually runs twice on each doc write
-            // We need to add the sanitized property to avoid an infinite loop
+            // We need to add the sanitized property to avoid an infinite loopcd t
             return change.after.ref.update({
                 content: content.replace(/CoffeeScript/g, '*********'),
                 sanitized: true
             });
         }
-        return null;
+        return null;    
     })
+
+exports.incrementCommentCount = functions.firestore.document('posts/{postId}/comments/{commentId}').onCreate(async (snapshot, context) => {
+    // We only have access to AFTER, not BEFORE onCreate
+    // GETTING THE POST ID:
+        // We could navigate UP THE PARENTS using the doc-ref
+        // We could take them from the Params object.
+        const { postId, commentId } = context.params;
+        const postRef = firestore.doc(`posts/${postId}`);
+        // .data() will get all properties
+        // .get() will get one key-value (or more, not sure.)
+        // Actually, .get() is called on the reference, which returns the doccument comments object
+        const snap = await postRef.get('comments');
+        const comments = snap.get('comments')
+        return postRef.update({ comments: comments + 1});
+})
+
+// We can listen on AuthChanges - auth.create - can create that user doc on firebase cloud functions instead on front-end.

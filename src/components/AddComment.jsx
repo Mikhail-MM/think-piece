@@ -10,7 +10,8 @@ class AddComment extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-
+    const { content } = this.state
+    this.props.onCreate({content});
     this.setState({ content: '' });
   };
 

@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 
 import Post from './Post';
 import Comments from './Comments';
-
+import withUser from './withUser'
 import { collectIdsAndDocs } from '../utils';
 
 
@@ -46,14 +46,16 @@ class PostPage extends Component {
     }
 
     createComment = (comment) => {
-        console.log(comment)
+        const { user } = this.props;
         this.commentsRef.add({
-            ...comment
+            ...comment,
+            user
         })
     }
 
     render() {
         const { post, comments } = this.state;
+        console.log(this.props)
         return <section> 
             {post && <Post {...post} />}
             <Comments
@@ -65,4 +67,4 @@ class PostPage extends Component {
     }
 }
 
-export default PostPage;
+export default withUser(PostPage);

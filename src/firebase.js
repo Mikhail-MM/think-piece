@@ -48,14 +48,13 @@ export const createUserProfileDocument = async (user, additionalData)  => {
     }
   }
   // Always return an object containing { The user's ID, as well as the other data - This is for SetState}
-  return getUserDocument(user.uid);
+  return getUserDocumentRef(user.uid);
 }
 
-export const getUserDocument = async (uid) => {
+export const getUserDocumentRef = (uid) => {
   if (!uid) return null;
   try {
-    const user = await firestore.collection('users').doc(uid).get();
-    return { uid, ...user.data() }
+    return firestore.collection('users').doc(uid)
   } catch(err) {
     console.error('Error fetching user', err.message);
   }
